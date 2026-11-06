@@ -194,7 +194,7 @@ const generateInitialDemoData = () => {
       'Agüita de hierbas (manzanilla con anís)',
       '1 trozo pequeño de queque casero y té rojo',
       'Gelatina de frambuesa y agua tibia',
-      'Galletas de agua con mermelada de durazno'
+      'Galletas de agua con mermermelada de durazno'
     ],
     cena: [
       'Crema de zapallo y verduras licuadas con crutones',
@@ -349,7 +349,7 @@ const generateInitialDemoData = () => {
           foodText = 'Café con leche entera y pan caliente con queso derretido';
           hasSymptom = true;
           symptoms = ['Dolor esófago/estómago', 'Náuseas', 'Pesadez'];
-          severity = 'Fuerte';
+          severity: 'Fuerte';
           onset = '1 hora después';
           symptomNotes = 'El café con leche entera y queso le provocó dolor fuerte en el esófago y náuseas.';
         } else if (i === 6 && b.id === 'cena') {
