@@ -194,7 +194,7 @@ const generateInitialDemoData = () => {
       'Agüita de hierbas (manzanilla con anís)',
       '1 trozo pequeño de queque casero y té rojo',
       'Gelatina de frambuesa y agua tibia',
-      'Galletas de agua con mermermelada de durazno'
+      'Galletas de agua con mermelada de durazno'
     ],
     cena: [
       'Crema de zapallo y verduras licuadas con crutones',
@@ -349,7 +349,7 @@ const generateInitialDemoData = () => {
           foodText = 'Café con leche entera y pan caliente con queso derretido';
           hasSymptom = true;
           symptoms = ['Dolor esófago/estómago', 'Náuseas', 'Pesadez'];
-          severity: 'Fuerte';
+          severity = 'Fuerte';
           onset = '1 hora después';
           symptomNotes = 'El café con leche entera y queso le provocó dolor fuerte en el esófago y náuseas.';
         } else if (i === 6 && b.id === 'cena') {
@@ -491,7 +491,6 @@ export default function App() {
 
     const iconUrl = generateAppIconDataUrl();
 
-    // Meta tags para que al agregar a pantalla de inicio se abra a pantalla completa como App nativa
     const setOrUpdateMeta = (name, content) => {
       let el = document.querySelector(`meta[name="${name}"]`);
       if (!el) {
@@ -508,7 +507,6 @@ export default function App() {
     setOrUpdateMeta('apple-mobile-web-app-title', 'Agenda Comidas');
     setOrUpdateMeta('mobile-web-app-capable', 'yes');
 
-    // Apple Touch Icon
     let appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
     if (!appleIcon) {
       appleIcon = document.createElement('link');
@@ -517,7 +515,6 @@ export default function App() {
     }
     appleIcon.setAttribute('href', iconUrl);
 
-    // Web App Manifest dinámico si no hay uno externo
     if (!document.querySelector('link[rel="manifest"]')) {
       const manifestObj = {
         name: 'Agenda Comidas - Registro y Síntomas',
@@ -545,7 +542,6 @@ export default function App() {
       document.head.appendChild(linkManifest);
     }
 
-    // Capturar evento de instalación nativa en Chrome / Edge / Android
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredInstallPrompt(e);
@@ -572,7 +568,6 @@ export default function App() {
     localStorage.setItem('mama_journal_reminder_v1', JSON.stringify(reminderConfig));
   }, [reminderConfig]);
 
-  // Mostrar notificación tipo Toast
   const showToast = (text, type = 'success') => {
     setToastMessage({ text, type });
     setTimeout(() => {
@@ -580,7 +575,6 @@ export default function App() {
     }, 3200);
   };
 
-  // Instalar WebApp cuando el navegador lo soporta directamente
   const handleTriggerNativeInstall = async () => {
     if (deferredInstallPrompt) {
       deferredInstallPrompt.prompt();
@@ -668,7 +662,6 @@ export default function App() {
     };
   };
 
-  // Calcular los 7 días de la semana (Lunes a Domingo) para la fecha seleccionada
   const currentWeekDays = useMemo(() => {
     const selected = parseDateKey(selectedDateKey);
     const dayOfWeek = selected.getDay();
@@ -690,7 +683,6 @@ export default function App() {
     });
   }, [selectedDateKey, records]);
 
-  // Calcular los 3 días para la vista "Cada 3 días"
   const threeDaysList = useMemo(() => {
     const centerDate = parseDateKey(selectedDateKey);
     return [0, 1, 2].map((offset) => {
@@ -709,7 +701,6 @@ export default function App() {
     });
   }, [selectedDateKey, records]);
 
-  // Calcular los días del calendario mensual
   const monthCalendarDays = useMemo(() => {
     const year = currentMonthDate.getFullYear();
     const month = currentMonthDate.getMonth();
@@ -738,7 +729,6 @@ export default function App() {
     return cells;
   }, [currentMonthDate, selectedDateKey, records]);
 
-  // Guardar un bloque de comida + síntomas
   const handleSaveBlock = (dateKey, blockId, blockData) => {
     setRecords((prev) => {
       const dayRecords = { ...(prev[dateKey] || {}) };
@@ -763,7 +753,6 @@ export default function App() {
     showToast('Registro actualizado');
   };
 
-  // Marcar / Desmarcar rápidamente un bloque como "Comida saltada" directamente desde la Agenda
   const handleToggleSkipBlock = (dateKey, block) => {
     setRecords((prev) => {
       const dayRecords = { ...(prev[dateKey] || {}) };
@@ -794,7 +783,6 @@ export default function App() {
     showToast('Estado de comida actualizado');
   };
 
-  // Eliminar un bloque específico
   const handleDeleteBlock = (dateKey, blockId) => {
     setRecords((prev) => {
       const dayRecords = { ...(prev[dateKey] || {}) };
@@ -876,7 +864,6 @@ export default function App() {
     showToast('Archivo Excel (.csv) descargado con éxito');
   };
 
-  // Exportar tabla HTML compatible con Excel (.xls) con colores para lectura médica rápida
   const exportToFormattedExcelTable = () => {
     const sortedDates = Object.keys(records).sort((a, b) => b.localeCompare(a));
     let tableRows = '';
@@ -945,7 +932,6 @@ export default function App() {
     showToast('Reporte Excel (.xls) con colores descargado');
   };
 
-  // Exportar JSON completo (incluye fotos en base64)
   const exportFullBackupJSON = () => {
     const payload = {
       appName: 'AgendaComidas',
@@ -963,7 +949,6 @@ export default function App() {
     showToast('Respaldo completo (.json) descargado');
   };
 
-  // Importar archivo JSON o CSV
   const handleImportBackup = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -1025,9 +1010,6 @@ export default function App() {
     reader.readAsText(file);
   };
 
-  // ==========================================
-  // CLASES DE TEMA (OSCURO #1f1f1f / CLARO)
-  // ==========================================
   const theme = {
     bgMain: darkMode ? 'bg-[#1f1f1f] text-[#f3f4f6]' : 'bg-[#f3f6f3] text-[#1e2923]',
     bgCard: darkMode
@@ -1050,9 +1032,6 @@ export default function App() {
 
   return (
     <div className={`min-h-screen transition-colors duration-200 ${theme.bgMain} pb-28 font-sans`}>
-      {/* ========================================== */}
-      {/* NOTIFICACIÓN TOAST FLOTANTE */}
-      {/* ========================================== */}
       {toastMessage && (
         <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 animate-bounce">
           <div
@@ -1068,12 +1047,8 @@ export default function App() {
         </div>
       )}
 
-      {/* ========================================== */}
-      {/* BARRA SUPERIOR LIMPIA ("Agenda Comidas") */}
-      {/* ========================================== */}
       <header className={`sticky top-0 z-40 h-16 backdrop-blur-md border-b ${theme.bgHeader}`}>
         <div className="max-w-5xl mx-auto h-full px-4 flex items-center justify-between gap-2">
-          {/* Título corto y genérico: Agenda Comidas */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#4ade80] to-[#16a34a] flex items-center justify-center text-[#092214] shadow-md">
               <Utensils className="w-5 h-5 stroke-[2.3]" />
@@ -1089,9 +1064,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Botones de Acción Rápida: Instalar App, Recordatorio, Backup y Tema */}
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Botón Instalar en Celular / PC (PWA) */}
             <button
               onClick={handleTriggerNativeInstall}
               title="Instalar como aplicación en el celular o computador"
@@ -1101,7 +1074,6 @@ export default function App() {
               <span className="hidden md:inline">Instalar App</span>
             </button>
 
-            {/* Botón Recordatorio */}
             <button
               onClick={() => setShowReminderModal(true)}
               title="Configurar recordatorio nocturno"
@@ -1113,7 +1085,6 @@ export default function App() {
               )}
             </button>
 
-            {/* Botón Backup / Excel */}
             <button
               onClick={() => setShowBackupModal(true)}
               title="Respaldo y Exportar a Excel"
@@ -1123,7 +1094,6 @@ export default function App() {
               <span className="hidden sm:inline">Backup / Excel</span>
             </button>
 
-            {/* Botón Tema Oscuro / Claro */}
             <button
               onClick={() => setDarkMode(!darkMode)}
               title={darkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro (#1f1f1f)'}
@@ -1139,9 +1109,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* ========================================== */}
-      {/* BANNER RECORDATORIO SI FALTAN COMIDAS HOY */}
-      {/* ========================================== */}
       {!reminderBannerDismissed && reminderConfig.enabled && todaySummary.mealsLogged < 5 && (
         <div className="max-w-5xl mx-auto px-4 pt-3">
           <div
@@ -1180,9 +1147,6 @@ export default function App() {
         </div>
       )}
 
-      {/* ========================================== */}
-      {/* CONTENIDO PRINCIPAL SEGÚN PESTAÑA INFERIOR */}
-      {/* ========================================== */}
       <main className="max-w-5xl mx-auto px-4 pt-3">
         {activeTab === 'agenda' && (
           <AgendaSection
@@ -1241,10 +1205,6 @@ export default function App() {
         )}
       </main>
 
-      {/* ========================================== */}
-      {/* BARRA DE NAVEGACIÓN INFERIOR (SIEMPRE VISIBLE) */}
-      {/* Agenda - Cascada - Patrones */}
-      {/* ========================================== */}
       <nav
         className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-40 p-1.5 rounded-full border shadow-2xl flex items-center gap-1 sm:gap-2 ${
           darkMode
@@ -1289,9 +1249,6 @@ export default function App() {
         </button>
       </nav>
 
-      {/* ========================================== */}
-      {/* MODAL DE EDICIÓN DE BLOQUE Y SÍNTOMAS */}
-      {/* ========================================== */}
       {editingBlock && (
         <BlockEditorModal
           darkMode={darkMode}
@@ -1306,9 +1263,6 @@ export default function App() {
         />
       )}
 
-      {/* ========================================== */}
-      {/* MODAL PARA VER FOTO ADJUNTA */}
-      {/* ========================================== */}
       {photoModalData && (
         <PhotoLightboxModal
           darkMode={darkMode}
@@ -1323,9 +1277,6 @@ export default function App() {
         />
       )}
 
-      {/* ========================================== */}
-      {/* MODAL DE RECORDATORIO NOCTURNO */}
-      {/* ========================================== */}
       {showReminderModal && (
         <ReminderSettingsModal
           darkMode={darkMode}
@@ -1337,9 +1288,6 @@ export default function App() {
         />
       )}
 
-      {/* ========================================== */}
-      {/* MODAL DE INSTRUCCIONES DE INSTALACIÓN PWA */}
-      {/* ========================================== */}
       {showInstallModal && (
         <InstallPwaModal
           darkMode={darkMode}
@@ -1350,9 +1298,6 @@ export default function App() {
         />
       )}
 
-      {/* ========================================== */}
-      {/* MODAL DE BACKUP Y EXPORTACIÓN EXCEL */}
-      {/* ========================================== */}
       {showBackupModal && (
         <BackupModal
           darkMode={darkMode}
@@ -1425,16 +1370,12 @@ function AgendaSection({
 
   return (
     <div className="space-y-4">
-      {/* ===================================================== */}
-      {/* BARRA STICKY SIEMPRE A LA VISTA (CONTROLES + SEMANA) */}
-      {/* ===================================================== */}
       <div
         className={`sticky top-16 z-30 pt-1 pb-2.5 -mx-4 px-4 backdrop-blur-md border-b transition-all ${
           darkMode ? 'bg-[#1f1f1f]/95 border-[#333333]' : 'bg-[#f3f6f3]/95 border-[#dce5dc]'
         }`}
       >
         <div className="space-y-2.5">
-          {/* Controles de navegación de fecha y selector Diaria / 3 Días / Mensual */}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-1.5">
               <button
@@ -1475,7 +1416,6 @@ function AgendaSection({
               </span>
             </div>
 
-            {/* Selector de modo de visualización de la Agenda */}
             <div
               className={`flex items-center p-1 rounded-xl border ${
                 darkMode ? 'bg-[#262626] border-[#383838]' : 'bg-[#e6ede6] border-[#d2dfd2]'
@@ -1501,7 +1441,6 @@ function AgendaSection({
             </div>
           </div>
 
-          {/* Tira de los 7 días de la semana SIEMPRE VISIBLE en vista Diaria y 3 Días */}
           {agendaView !== 'mensual' && (
             <div className="grid grid-cols-7 gap-1 sm:gap-2">
               {currentWeekDays.map((day) => {
@@ -1549,7 +1488,6 @@ function AgendaSection({
                       {day.dayNumber}
                     </span>
 
-                    {/* 5 Puntos inferiores que representan los 5 bloques del día */}
                     <div className="flex items-center gap-0.5 sm:gap-1 mt-0.5">
                       {MEAL_BLOCKS.map((b) => {
                         const st = blockStates[b.id];
@@ -1596,12 +1534,8 @@ function AgendaSection({
         </div>
       </div>
 
-      {/* ===================================================== */}
-      {/* SUB-VISTA 1: VISTA DIARIA (DEFAULT HOME) */}
-      {/* ===================================================== */}
       {agendaView === 'diaria' && (
         <div className="space-y-4">
-          {/* Resumen rápido del día seleccionado */}
           <div className={`px-4 py-2.5 rounded-2xl border ${theme.bgCard} flex flex-wrap items-center justify-between gap-2 text-xs`}>
             <div className="flex flex-wrap items-center gap-3">
               <span className="font-semibold flex items-center gap-1.5">
@@ -1626,7 +1560,6 @@ function AgendaSection({
             </div>
           </div>
 
-          {/* Línea de tiempo vertical hora por hora de los 5 bloques */}
           <div className="space-y-3.5 relative">
             {MEAL_BLOCKS.map((block, index) => {
               const entry = records[selectedDateKey]?.[block.id];
@@ -1639,7 +1572,6 @@ function AgendaSection({
 
               return (
                 <div key={block.id} className="relative flex gap-3 sm:gap-4 items-stretch">
-                  {/* Columna izquierda: Hora y Cápsula estilo HabitTick */}
                   <div className="w-16 sm:w-20 shrink-0 flex flex-col items-center">
                     <span className={`text-xs font-bold mb-1.5 ${theme.textMuted}`}>
                       {entry?.time || block.defaultTime}
@@ -1683,7 +1615,6 @@ function AgendaSection({
                     )}
                   </div>
 
-                  {/* Tarjeta derecha del bloque de comida y síntomas */}
                   <div
                     className={`flex-1 rounded-3xl border p-4 transition-all ${
                       hasSymptom
@@ -1717,7 +1648,6 @@ function AgendaSection({
                         )}
                       </div>
 
-                      {/* Acciones del bloque: Saltar comida y Editar/Anotar */}
                       <div className="flex items-center gap-1.5">
                         {!hasFood && (
                           <button
@@ -1758,7 +1688,6 @@ function AgendaSection({
                       </div>
                     </div>
 
-                    {/* Contenido de la comida o aviso de comida saltada */}
                     {isSkipped ? (
                       <p className="mt-2 text-xs sm:text-sm font-medium text-amber-400/90 flex items-center gap-1.5">
                         <span>— No comió en este horario (pasó estas horas en ayuno).</span>
@@ -1776,7 +1705,6 @@ function AgendaSection({
                       </p>
                     )}
 
-                    {/* Botón compacto de foto cargada */}
                     {hasPhoto && (
                       <div className="mt-2.5">
                         <button
@@ -1798,7 +1726,6 @@ function AgendaSection({
                       </div>
                     )}
 
-                    {/* Tarjeta de Síntomas: Si no tiene síntomas, muestra barra con botón "+" a la derecha */}
                     {!hasSymptom ? (
                       <div
                         onClick={() => onEditBlock(selectedDateKey, block.id, true)}
@@ -1843,7 +1770,6 @@ function AgendaSection({
                         </button>
                       </div>
                     ) : (
-                      /* Bloque visual cuando SÍ reportó malestar en esta comida */
                       <div
                         onClick={() => onEditBlock(selectedDateKey, block.id, true)}
                         className={`mt-3 p-3 rounded-2xl border cursor-pointer transition-all ${
@@ -1893,9 +1819,6 @@ function AgendaSection({
         </div>
       )}
 
-      {/* ===================================================== */}
-      {/* SUB-VISTA 2: VISTA CADA 3 DÍAS (COMPARATIVA) */}
-      {/* ===================================================== */}
       {agendaView === '3dias' && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -2050,9 +1973,6 @@ function AgendaSection({
         </div>
       )}
 
-      {/* ===================================================== */}
-      {/* SUB-VISTA 3: CALENDARIO MENSUAL */}
-      {/* ===================================================== */}
       {agendaView === 'mensual' && (
         <div className={`p-4 sm:p-5 rounded-3xl border ${theme.bgCard}`}>
           <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
@@ -2172,7 +2092,7 @@ function AgendaSection({
 }
 
 // ==========================================
-// SECCIÓN 2: CUADROS EN CASCADA (CON COLORES DISTINTIVOS POR BLOQUE)
+// SECCIÓN 2: CUADROS EN CASCADA
 // ==========================================
 function CascadeHabitsSection({
   darkMode,
@@ -2217,7 +2137,6 @@ function CascadeHabitsSection({
 
   return (
     <div className="space-y-5">
-      {/* Sub-barra de vista Cascada / Semanal y Leyenda */}
       <div className={`p-3 rounded-2xl border flex flex-wrap items-center justify-between gap-3 ${theme.bgCard}`}>
         <div
           className={`flex items-center p-1 rounded-xl border ${
@@ -2270,9 +2189,6 @@ function CascadeHabitsSection({
         </div>
       </div>
 
-      {/* ===================================================== */}
-      {/* VISTA 1: MATRICES DE CUADROS EN CASCADA */}
-      {/* ===================================================== */}
       {habitSubView === 'cascada' && (
         <div className="space-y-4">
           <CascadeCard
@@ -2318,9 +2234,6 @@ function CascadeHabitsSection({
         </div>
       )}
 
-      {/* ===================================================== */}
-      {/* VISTA 2: RUTINA SEMANAL POR BLOQUES CON SU COLOR */}
-      {/* ===================================================== */}
       {habitSubView === 'semanal' && (
         <div className="space-y-3">
           {MEAL_BLOCKS.map((block) => {
@@ -2720,7 +2633,6 @@ function PatternsMedicalSection({
         </button>
       </div>
 
-      {/* 4 KPIs Principales */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className={`p-4 rounded-3xl border ${theme.bgCard}`}>
           <span className={`text-xs font-bold ${theme.textMuted}`}>Días Registrados</span>
@@ -2758,7 +2670,6 @@ function PatternsMedicalSection({
         </div>
       </div>
 
-      {/* Gráficos de Frecuencia de Síntomas y Horarios Críticos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className={`p-4 sm:p-5 rounded-3xl border ${theme.bgCard}`}>
           <h3 className="text-sm sm:text-base font-extrabold mb-3 flex items-center gap-2">
@@ -2837,7 +2748,6 @@ function PatternsMedicalSection({
         </div>
       </div>
 
-      {/* Bitácora Cronológica Detallada para Revisión Médica */}
       <div className={`p-4 sm:p-6 rounded-3xl border ${theme.bgCard}`}>
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div>
