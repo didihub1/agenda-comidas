@@ -29,15 +29,11 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar dependencias y compilar
-        run: |
-          npm install
-          npm run build
+      - name: Instalar dependencias
+        run: npm install
 
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+      - name: Compilar aplicacion
+        run: npm run build
 
       - name: Subir artefacto compilado
         uses: actions/upload-pages-artifact@v3
